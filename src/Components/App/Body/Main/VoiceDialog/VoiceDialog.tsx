@@ -27,7 +27,6 @@ const VoiceDialog: React.FC<VoiceDialogProps> = (props) => {
     };
 
     const onStop = (recordedData: ReactMicStopEvent) => {
-        console.log("data=", recordedData);
         setDownloadLink(recordedData.blobURL);
         sendVoice(recordedData.blob);
     };
@@ -52,10 +51,6 @@ const VoiceDialog: React.FC<VoiceDialogProps> = (props) => {
                     mimeType="audio/wav"
                 />
                 <ButtonsWrapper>
-                    <Button disabled={downLoadLink === ""}>
-                        {/*<a href={downLoadLink} download>Скачать</a>*/}
-                        Скачать
-                    </Button>
                     <Button onClick={handleOnStopClick}>
                         Остановить
                     </Button>

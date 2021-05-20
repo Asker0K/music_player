@@ -51,7 +51,6 @@ const AudioControls: React.FC<AudioControlsProps> = (props) => {
             <Tooltip title={"Повторять"}>
                 <span>
                     <IconButton color={isRepeat ? "primary" : undefined} onClick={() => {
-                        console.log('isRepeat=', isRepeat);
                         onRepeatClick(!isRepeat);
                     }}>
                         <RepeatIcon fontSize="small" color={isRepeat ? "primary" : undefined}/>

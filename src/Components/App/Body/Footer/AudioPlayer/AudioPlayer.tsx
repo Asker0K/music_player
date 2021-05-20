@@ -110,7 +110,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
             toRandomTrack();
             return;
         }
-
         if (trackIndex < tracks.length - 1) {
             setTrackIndex(trackIndex + 1);
         } else {
@@ -122,8 +121,24 @@ const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
         setTrackIndex(Math.ceil(Math.random() * tracks.length-1));
     }
 
+    const UseEffectFunction = () => {
+        audioRef.current.pause();
+
+        audioRef.current = new Audio(audioSrc);
+        setTrackProgress(audioRef.current.currentTime);
+        audioRef.current.volume = volume / 100;
+
+        if (isReady.current) {
+            audioRef.current.play();
+            setIsPlaying(true);
+            startTimer();
+        } else {
+            isReady.current = true;
+        }
+    }
+
     const repeatTrack = () => {
-        setTrackIndex(Math.floor(trackIndex+0.001));
+        UseEffectFunction();
     }
 
     const handleVolumeChange = (event: any, newValue: number | number[]) => {
@@ -147,49 +162,59 @@ const AudioPlayer: React.FC<AudioPlayerProps> = (props) => {
         };
     }, []);
 
-    useEffect(() => {
-        audioRef.current.pause();
 
-        audioRef.current = new Audio(audioSrc);
-        setTrackProgress(audioRef.current.currentTime);
-        audioRef.current.volume = volume / 100;
-
-        if (isReady.current) {
-            audioRef.current.play();
-            setIsPlaying(true);
-            startTimer();
-        } else {
-            isReady.current = true;
-        }
-    }, [trackIndex]);
+    useEffect(UseEffectFunction, [trackIndex]);
 
     useEffect(() => {
         audioRef.current.volume = volume / 100;
     }, [volume]);
 
     useEffect(() => {
-        if(currentCommand === "старт") {
-            setIsPlaying(true);
-        }
-        if(currentCommand === "стоп") {
-            setIsPlaying(false);
-        }
-        if(currentCommand === "следующий") {
-            toNextTrack();
-        }
-        if(currentCommand === "предыдущий") {
-            toPrevTrack();
-        }
-        if(currentCommand === "повторять") {
-            setIsRepeat(true);
-        }
-        if(currentCommand === "добавить") {
-            likeDislikeTracks(activeTrack.id, true)
-        }
-        if(currentCommand === "удалить") {
-            likeDislikeTracks(activeTrack.id, false)
-        }
 
+        switch(currentCommand) {
+            case "старт":
+                setIsPlaying(true);
+                break;
+            case "стоп":
+                setIsPlaying(false);
+                break;
+            case "следующий":
+                toNextTrack();
+                break;
+            case "предыдущий":
+                toPrevTrack();
+                break;
+            case "повторять":
+                setIsRepeat(!isRepeat);
+                break;
+            case "добавить":
+                likeDislikeTracks(activeTrack.id, true);
+                break;
+            case "удалить":
+                likeDislikeTracks(activeTrack.id, false);
+                break;
+            case "перемешать":
+                setIsShuffle(!isShuffle);
+                break;
+            case "громче":
+                setVolume(volume + 0.1*volume);
+                break;
+            case "громко":
+                setVolume(100);
+                break;
+            case "тише":
+                setVolume(volume - 0.1*volume);
+                break;
+            case "привет":
+                alert("Привет!");
+                break;
+            case "пока":
+                alert("Пока!");
+                break;
+            case "тихо":
+                setVolume(0);
+                break;
+        }
     }, [currentCommand, commandsHistory.length]);
 
 

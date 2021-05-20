@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from "axios";
 
-const host = "http://localhost:5000";
+const host = "http://localhost:5001";
 
 export const createFormData = (data: { [key: string]: any }): FormData => {
     let requestFormData = new FormData();
@@ -26,7 +26,6 @@ export const audioApi = {
             .then((res: any) => {
                 return res;
             }).catch(function (err) {
-                console.log("ERR=", err);
                 return err.response;
             });
     },
@@ -36,7 +35,6 @@ export const audioApi = {
             .then((res: any) => {
                 return res;
             }).catch(function (err) {
-                console.log("ERR=", err);
                 return err.response;
             });
     },

@@ -77,20 +77,17 @@ class MainStore {
                 this.isLoading = false;
                 if(result.data.command) {
                     this.commandsHistory.push(result.data.command)
-                    console.log("COMMAND = ", JSON.stringify(this.currentCommand));
                 }
             })
         } catch (err) {
             runInAction(() => {
                 this.isLoading = false;
-                console.log("result=", err);
             })
         }
     }
 
     sendTest = async () => {
         const result = await audioApi.sendTest();
-        console.log("TEST_RES=", result);
     }
 }
 
